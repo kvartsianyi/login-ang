@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+
+import {AuthService} from '../../services/auth.service';
+import {UserRegisterModel} from '../../models/UserRegister.model';
 
 @Component({
   selector: 'app-hello-user',
@@ -8,12 +11,16 @@ import { Router } from '@angular/router';
 })
 export class HelloUserComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  user: UserRegisterModel;
 
-  ngOnInit(): void {
+  constructor(private router: Router, private authService: AuthService) {
   }
 
-  logout(){
+  ngOnInit(): void {
+    this.user = this.authService.getUser();
+  }
+
+  logout() {
     this.router.navigate(['']);
   }
 }

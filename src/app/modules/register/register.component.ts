@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {AuthService} from '../../services/auth.service';
+import {UserRegisterModel} from '../../models/UserRegister.model';
 
 @Component({
   selector: 'app-register',
@@ -12,6 +13,8 @@ import {AuthService} from '../../services/auth.service';
 export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
+  isPasswordsEqual = true;
+  isFormValid = true;
 
   constructor(private router: Router, private formBuilder: FormBuilder, private authService: AuthService) {
     this.registerForm = formBuilder.group({
@@ -33,14 +36,25 @@ export class RegisterComponent implements OnInit {
 
   register(event) {
     event.preventDefault();
-    const userData = this.registerForm.value;
 
-    console.log(userData);
+    this.isFormValid = !this.registerForm.invalid;
+
+    if (!this.isFormValid) {
+      return;
+    }
+
+    const {email, login, password, passwordRepeat} = this.registerForm.value;
+
+    if (password !== passwordRepeat) {
+      this.isPasswordsEqual = false;
+
+      return;
+    }
+
+    const userData = new UserRegisterModel(email, login, password);
 
     this.authService.register(userData);
     this.router.navigate(['login']);
-
-    // console.log(this.registerForm.value);
   }
 
 }

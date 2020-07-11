@@ -1,7 +1,8 @@
-<div class="w-100-vw">
+<div class="w-100-vw text-center">
   <div class="profile container py-3">
-    <p>Hello dear user!</p>
-    <button type="button" class="btn btn-primary" (click)="logout()">Logout</button>
+    <h2>Hello dear {{user?.login}}!</h2>
+    <div>Your email {{user?.email}}</div>
+    <div class=" my-3"><button type="button" class="btn btn-primary" (click)="logout()">Logout</button></div>
   </div>
 </div>
 

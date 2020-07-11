@@ -1,3 +1,7 @@
+<div class="alert alert-danger" *ngIf="!isFormValid" role="alert">
+  <h4 class="alert-heading">Invalid login or password!</h4>
+</div>
+
 <form class="form-white shadow"  [formGroup]="loginForm" (ngSubmit)="formSubmit($event)">
   <h2 class="text-center mb-2">Login</h2>
   <div class="form-group">
