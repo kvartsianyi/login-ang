@@ -26,8 +26,8 @@ export class LoginComponent implements OnInit {
 
     this.loginForm = formBuilder.group({
       selectLanguage: [language || 'en'],
-      login: ['', [Validators.required, Validators.minLength(3)]],
-      password: ['', [Validators.required, Validators.minLength(8)]]
+      login: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]]
     });
   }
 
