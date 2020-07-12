@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {TranslateService} from '@ngx-translate/core';
+
 
 import {AuthService} from '../../services/auth.service';
 import {UserLoginModel} from '../../models/UserLogin.model';
-import {TranslateService} from '@ngx-translate/core';
+import {TokenPairModel} from '../../models/TokenPair.model';
 
 @Component({
   selector: 'app-login',
@@ -49,17 +51,17 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    const {selectLanguage, login, password} = this.loginForm.value;
-    const userData = new UserLoginModel(selectLanguage, login, password);
-    const isUserPresent = this.authService.login(userData);
+    const {login, password} = this.loginForm.value;
+    const userData = new UserLoginModel(login, password);
 
-    if (!isUserPresent) {
-      this.isFormValid = false;
-
-      return;
-    }
-
-    this.router.navigate(['user']);
+    this.authService.login(userData).subscribe((data: TokenPairModel) => {
+      this.authService.setTokenPair(data);
+      this.router.navigate(['user']);
+    }, ({error}) => {
+      if (error.message) {
+        this.isFormValid = false;
+      }
+    });
   }
 
   languageChange() {

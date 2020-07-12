@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 
 import {AuthService} from '../../services/auth.service';
-import {UserRegisterModel} from '../../models/UserRegister.model';
+import {UserModel} from '../../models/User.model';
 
 @Component({
   selector: 'app-hello-user',
@@ -11,16 +11,27 @@ import {UserRegisterModel} from '../../models/UserRegister.model';
 })
 export class HelloUserComponent implements OnInit {
 
-  user: UserRegisterModel;
+  user: UserModel;
 
   constructor(private router: Router, private authService: AuthService) {
   }
 
   ngOnInit(): void {
-    this.user = this.authService.getUser();
+    this.authService.getUser().subscribe((user: UserModel) => {
+      this.user = user;
+    });
   }
 
   logout() {
-    this.router.navigate(['']);
+
+    this.authService.logout().subscribe(data => {
+      this.authService.deleteTokenPair();
+      this.router.navigate(['']);
+    }, ({error}) => {
+      if (error.message) {
+        alert(error.message);
+      }
+    });
+
   }
 }

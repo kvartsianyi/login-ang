@@ -10,7 +10,9 @@ export class AppComponent {
   title = 'login-ang';
 
   constructor(private translate: TranslateService) {
+    const language = localStorage.getItem('language');
+
     translate.addLangs(['en', 'uk']);
-    translate.setDefaultLang('en');
+    translate.setDefaultLang(language || 'en');
   }
 }

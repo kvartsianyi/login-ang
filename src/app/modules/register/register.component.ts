@@ -53,8 +53,12 @@ export class RegisterComponent implements OnInit {
 
     const userData = new UserRegisterModel(email, login, password);
 
-    this.authService.register(userData);
-    this.router.navigate(['login']);
+    this.authService.register(userData).subscribe(data => {
+      this.router.navigate(['login']);
+    }, ({error}) => {
+      if (error.message) {
+        alert(error.message);
+      }
+    });
   }
-
 }

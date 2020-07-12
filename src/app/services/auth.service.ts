@@ -1,7 +1,14 @@
 import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Router} from '@angular/router';
+import {Observable} from 'rxjs';
 
-import {UserRegisterModel} from '../models/UserRegister.model';
+import {API_BASE_URL} from '../config';
+import {HeadersEnum} from '../constants';
 import {UserLoginModel} from '../models/UserLogin.model';
+import {UserRegisterModel} from '../models/UserRegister.model';
+import {TokenPairModel} from '../models/TokenPair.model';
+import {UserModel} from '../models/User.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,35 +17,63 @@ export class AuthService {
 
   user: UserRegisterModel;
 
-  constructor() {
+  constructor(private http: HttpClient, private router: Router) {
   }
 
-  register(user: UserRegisterModel): void {
-    let users = JSON.parse(localStorage.getItem('users'));
+  register(user: UserRegisterModel): Observable<any> {
+    return this.http.post(
+      `${API_BASE_URL}/users`,
+      {...user}
+    );
+  }
 
-    if (!users) {
-      localStorage.setItem('users', JSON.stringify([]));
+  login(userData: UserLoginModel): Observable<any> {
+    return this.http.post(
+      `${API_BASE_URL}/auth/login`,
+      userData
+    );
+  }
 
-      users = [];
+  logout(): Observable<any> {
+    const {accessToken} = this.getTokenPair();
+    const headers = new HttpHeaders().set(HeadersEnum.AUTHORIZATION, accessToken);
+
+    return this.http.post(
+      `${API_BASE_URL}/auth/logout`,
+      {}, {headers}
+    );
+  }
+
+  getUser(): Observable<UserModel> {
+    const {accessToken} = this.getTokenPair();
+    const headers = new HttpHeaders().set(HeadersEnum.AUTHORIZATION, accessToken);
+
+    return this.http.get<UserModel>(
+      `${API_BASE_URL}/users/user`, {headers}
+    );
+  }
+
+  setTokenPair(tokenPair: TokenPairModel) {
+    const {accessToken, refreshToken} = tokenPair;
+
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+  }
+
+  getTokenPair(): TokenPairModel {
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    if (!accessToken || !refreshToken) {
+      this.router.navigate(['login']);
+      return;
     }
 
-    users.push(user);
-
-    localStorage.setItem('users', JSON.stringify(users));
+    return {accessToken, refreshToken};
   }
 
-  login(userData: UserLoginModel): boolean {
-    const users: [UserRegisterModel] = JSON.parse(localStorage.getItem('users'));
-    const userIndex = users.findIndex(user => user.login === userData.login && user.password === userData.password);
-
-    if (userIndex !== -1) {
-      this.user = users[userIndex];
-    }
-
-    return userIndex !== -1;
-  }
-
-  getUser(): UserRegisterModel {
-    return this.user;
+  deleteTokenPair() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
   }
 }

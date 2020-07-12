@@ -13,15 +13,15 @@ export class UserGuardService implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):
-    Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const user = this.authService.getUser();
+    Observable<boolean> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    if (!user) {
-      this.router.navigate(['login']);
+    return this.authService.getUser().toPromise().then(user => {
+      if (!user) {
+        this.router.navigate(['login']);
 
-      return false;
-    }
-
-    return true;
+        return false;
+      }
+      return true;
+    });
   }
 }
