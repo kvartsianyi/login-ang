@@ -1,8 +1,18 @@
 {
 	"NotRegistered": "Not registered?",
+	"alreadyRegistered": "Already registered?",
+	"email": "Email",
+	"helloUser": "👋Hello dear {{login}}",
+	"invalidLoginData": "Invalid login or password!",
+	"invalidRegisterData": "Invalid data!",
 	"login": "Login",
 	"loginBtn": "Login",
+	"logoutBtn": "Logout",
 	"password": "Password",
+	"passwordRepeat": "Re-password",
+	"passwordsDontMatch": "Passwords don't match!",
 	"register": "Register",
-	"selectLanguage": "Select language"
+	"registerBtn": "Register",
+	"selectLanguage": "Select language",
+	"userEmail": "Your email ✉{{email}}"
 }

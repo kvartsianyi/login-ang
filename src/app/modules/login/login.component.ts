@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {AuthService} from '../../services/auth.service';
 import {UserLoginModel} from '../../models/UserLogin.model';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
@@ -15,9 +16,16 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   isFormValid = true;
 
-  constructor(private router: Router, private formBuilder: FormBuilder, private authService: AuthService) {
+  constructor(
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private translate: TranslateService
+  ) {
+    const language = localStorage.getItem('language');
+
     this.loginForm = formBuilder.group({
-      selectLanguage: ['English'],
+      selectLanguage: [language || 'en'],
       login: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(8)]]
     });
@@ -41,8 +49,8 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    const {selectedLanguage, login, password} = this.loginForm.value;
-    const userData = new UserLoginModel(selectedLanguage, login, password);
+    const {selectLanguage, login, password} = this.loginForm.value;
+    const userData = new UserLoginModel(selectLanguage, login, password);
     const isUserPresent = this.authService.login(userData);
 
     if (!isUserPresent) {
@@ -52,5 +60,13 @@ export class LoginComponent implements OnInit {
     }
 
     this.router.navigate(['user']);
+  }
+
+  languageChange() {
+    const {selectLanguage} = this.loginForm.value;
+
+    localStorage.setItem('language', selectLanguage);
+
+    this.translate.use(selectLanguage);
   }
 }

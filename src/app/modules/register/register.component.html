@@ -1,31 +1,31 @@
 <div class="alert alert-danger" *ngIf="!isFormValid" role="alert">
-  <h4 class="alert-heading">Invalid data!</h4>
+  <h4 class="alert-heading">{{'invalidRegisterData' | translate}}</h4>
 </div>
 
 <form class="form-white shadow" [formGroup]="registerForm" (ngSubmit)="register($event)">
-  <h2 class="text-center mb-2">Register</h2>
+  <h2 class="text-center mb-2">{{'register' | translate}}</h2>
   <div class="form-group">
-    <label for="inputEmail">Email</label>
+    <label for="inputEmail">{{'email' | translate}}</label>
     <input type="email" class="form-control" id="inputEmail" formControlName="email" required>
   </div>
   <div class="form-group">
-    <label for="inputLogin">Login</label>
+    <label for="inputLogin">{{'login' | translate}}</label>
     <input type="text" class="form-control" id="inputLogin" formControlName="login" required>
   </div>
   <div class="form-group">
-    <label for="inputPassword">Password</label>
-    <input type="password" class="form-control" id="inputPassword" formControlName="password" required>
+    <label for="inputPassword">{{'password' | translate}}</label>
+    <input type="password" class="form-control" [ngClass]="{'is-invalid': !isPasswordsEqual}" id="inputPassword" formControlName="password" required>
   </div>
   <div class="form-group">
-    <label for="inputPasswordRepeat">Re-password</label>
+    <label for="inputPasswordRepeat">{{'passwordRepeat' | translate}}</label>
     <input type="password" class="form-control" [ngClass]="{'is-invalid': !isPasswordsEqual}" id="inputPasswordRepeat" formControlName="passwordRepeat" required>
     <div class="invalid-feedback" *ngIf="!isPasswordsEqual">
-      Passwords don't match.
+      {{'passwordsDontMatch' | translate}}
     </div>
   </div>
   <div class="text-center">
-    <button type="submit" class="btn btn-primary">Register</button>
+    <button type="submit" class="btn btn-primary">{{'registerBtn' | translate}}</button>
   </div>
-  <div class="mt-3 text-center">Already registered? <a href="" (click)="toLogin($event)">Log in</a></div>
+  <div class="mt-3 text-center">{{'alreadyRegistered' | translate}} <a href="" (click)="toLogin($event)">{{'loginBtn' | translate}}</a></div>
 </form>
 

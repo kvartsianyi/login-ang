@@ -1,8 +1,10 @@
 <div class="w-100-vw text-center">
   <div class="profile container py-3">
-    <h2>Hello dear {{user?.login}}!</h2>
-    <div>Your email {{user?.email}}</div>
-    <div class=" my-3"><button type="button" class="btn btn-primary" (click)="logout()">Logout</button></div>
+    <h2>{{'helloUser' | translate: {'login': user?.login} }}!</h2>
+    <div>{{'userEmail' | translate: {'email': user?.email} }}</div>
+    <div class=" my-3">
+      <button type="button" class="btn btn-primary" (click)="logout()">{{'logoutBtn' | translate}}</button>
+    </div>
   </div>
 </div>
 

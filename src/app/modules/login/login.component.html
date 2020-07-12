@@ -1,14 +1,14 @@
 <div class="alert alert-danger" *ngIf="!isFormValid" role="alert">
-  <h4 class="alert-heading">Invalid login or password!</h4>
+  <h4 class="alert-heading">{{'invalidLoginData' | translate}}</h4>
 </div>
 
 <form class="form-white shadow"  [formGroup]="loginForm" (ngSubmit)="formSubmit($event)">
   <h2 class="text-center mb-2">{{'login' | translate}}</h2>
   <div class="form-group">
     <label for="selectLanguage">{{'selectLanguage' | translate}}</label>
-    <select class="form-control" id="selectLanguage" formControlName="selectLanguage" required>
-      <option>English</option>
-      <option>Українська</option>
+    <select class="form-control" (change)="languageChange()" id="selectLanguage" formControlName="selectLanguage" required>
+      <option value="en">English</option>
+      <option value="uk">Українська</option>
     </select>
   </div>
   <div class="form-group">
