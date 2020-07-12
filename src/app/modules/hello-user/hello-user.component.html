@@ -1,8 +1,8 @@
 <div class="w-100-vw text-center">
   <div class="profile container py-3">
-    <h2>{{'helloUser' | translate: {'login': user?.login} }}!</h2>
-    <div>{{'userEmail' | translate: {'email': user?.email} }}</div>
-    <div class=" my-3">
+    <h2 class="mb-3">{{'helloUser' | translate: {'login': user?.login} }}!</h2>
+    <div class="my-3">{{'userEmail' | translate: {'email': user?.email} }}</div>
+    <div class="mt-4">
       <button type="button" class="btn btn-primary" (click)="logout()">{{'logoutBtn' | translate}}</button>
     </div>
   </div>
